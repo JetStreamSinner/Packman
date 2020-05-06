@@ -1,9 +1,10 @@
-﻿# CMakeList.txt : CMake project for PackmanGame, include source and define
-# project specific logic here.
-#
-cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required (VERSION 3.8)
 
-# Add source to this project's executable.
-add_executable (PackmanGame "PackmanGame.cpp" "PackmanGame.h")
+set(CMAKE_AUTOMOC ON)
+# if cmake cannot found qt5widgets package than set path explicit by following instruction
+# set(Qt5Widgets_DIR )
 
-# TODO: Add tests and install targets if needed.
+find_package(Qt5Widgets CONFIG REQUIRED)
+
+add_executable (PackmanGame "main.cpp" "MainWindow.cpp")
+target_link_libraries(PackmanGame Qt5::Widgets)
