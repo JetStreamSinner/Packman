@@ -2,6 +2,7 @@
 #define _MAIN_WINDOW_
 
 #include <QMainWindow>
+#include <memory>
 #include "SceneView.h"
 
 class MainWindow : public QMainWindow
@@ -13,7 +14,7 @@ public:
     explicit MainWindow(QMainWindow * parent = nullptr);
     //private declarations
 private:
-    SceneView * _view = nullptr;
+    std::unique_ptr<SceneView> _view = nullptr;
 };
 
 

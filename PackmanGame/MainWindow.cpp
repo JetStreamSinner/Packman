@@ -2,6 +2,6 @@
 
 MainWindow::MainWindow(QMainWindow * parent) : QMainWindow(parent)
 {
-    _view = new SceneView;
-    setCentralWidget(_view);
+    _view = std::make_unique<SceneView>();
+    setCentralWidget(_view.get());
 }
