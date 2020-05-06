@@ -2,6 +2,7 @@
 #define _MAIN_WINDOW_
 
 #include <QMainWindow>
+#include "SceneView.h"
 
 class MainWindow : public QMainWindow
 {
@@ -12,7 +13,7 @@ public:
     explicit MainWindow(QMainWindow * parent = nullptr);
     //private declarations
 private:
-
+    SceneView * _view = nullptr;
 };
 
 

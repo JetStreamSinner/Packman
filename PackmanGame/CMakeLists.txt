@@ -6,5 +6,5 @@ set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5Widgets CONFIG REQUIRED)
 
-add_executable (PackmanGame "main.cpp" "MainWindow.cpp")
+add_executable (PackmanGame "main.cpp" "MainWindow.cpp" "SceneView.cpp")
 target_link_libraries(PackmanGame Qt5::Widgets)
