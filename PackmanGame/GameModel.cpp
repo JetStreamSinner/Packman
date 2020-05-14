@@ -1,7 +1,12 @@
 #include "GameModel.h"
 GameModel::GameModel()
 {
+    _sceneObjects.push_back(SceneBound());
+}
 
+std::vector<SceneObject> GameModel::sceneObjects() const
+{
+    return _sceneObjects;
 }
 
 void GameModel::setBackgroundColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
@@ -17,7 +22,7 @@ void GameModel::setBackgroundColor(const Color &backgroundColor)
     _backgroundColor = backgroundColor;
 }
 
-Color GameModel::backgroundColor()
+Color GameModel::backgroundColor() const
 {
     return _backgroundColor;
 }

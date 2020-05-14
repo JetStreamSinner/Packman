@@ -5,6 +5,8 @@ set(CMAKE_AUTOMOC ON)
 # set(Qt5Widgets_DIR )
 
 find_package(Qt5Widgets CONFIG REQUIRED)
+set(src "main.cpp" "MainWindow.cpp" "SceneView.cpp" "GameModel.cpp" "Vertex.h"
+"SceneObjects/SceneBound.cpp")
 
-add_executable (PackmanGame "main.cpp" "MainWindow.cpp" "SceneView.cpp" "GameModel.cpp" "Vertex.h")
+add_executable (PackmanGame ${src})
 target_link_libraries(PackmanGame Qt5::Widgets)

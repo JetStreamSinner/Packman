@@ -2,6 +2,7 @@
 #define _GAME_MODEL_
 
 #include <QOpenGLFunctions>
+#include "SceneObjects/SceneBound.h"
 
 struct Color
 {
@@ -20,11 +21,13 @@ public:
     
     void setBackgroundColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat aplha);
     void setBackgroundColor(const Color &backgroundColor);
-    Color backgroundColor();
+    Color backgroundColor() const;
+    std::vector<SceneObject> sceneObjects() const;
 
 // private declaration
 private:
     Color _backgroundColor;
+    std::vector<SceneObject> _sceneObjects;
 };
 
 #endif

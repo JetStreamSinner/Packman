@@ -8,6 +8,7 @@
 #include <QOpenGLBuffer>
 
 #include "GameModel.h"
+#include "SceneObjects/SceneBound.h"
 
 class SceneView : public QOpenGLWidget
 {
@@ -23,20 +24,25 @@ public:
 // private declaration
 private:
 
+    struct DrawingObject
+    {
+        std::unique_ptr<QOpenGLBuffer> vbo = nullptr;
+        std::unique_ptr<QOpenGLVertexArrayObject> vao = nullptr;
+        Mode drawMode;
+    };
+
 
     std::shared_ptr<GameModel> _model = nullptr;
-
-    std::unique_ptr<QOpenGLBuffer> VBO = nullptr;
-    std::unique_ptr<QOpenGLBuffer> EBO = nullptr;
-    std::unique_ptr<QOpenGLVertexArrayObject> VAO = nullptr;
+    std::vector <DrawingObject> _drawingObjects;
 
 
 
     std::unique_ptr<QOpenGLShader> vertexShader = nullptr;
     std::unique_ptr<QOpenGLShader> fragmentShader = nullptr;
     std::unique_ptr<QOpenGLShaderProgram> shaderProgram = nullptr;
-    std::unique_ptr<QOpenGLVertexArrayObject> vertexArrayObject = nullptr;
 
+    DrawingObject makeObjectFromSource(const SceneObject &object);
+    void initializePipeline();
     void initializeGL() override;
     void paintGL() override;
     void resizeGL(int width, int height) override;
