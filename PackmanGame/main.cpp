@@ -4,6 +4,7 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "Shader.h"
 
 const char * vertexShaderSource =
 "#version 330 core\n"\
@@ -23,6 +24,7 @@ const char * fragmentShaderSource =
 
 int main(int argc, char * argv[])
 {
+
     GLFWwindow * window = nullptr;
     if (!glfwInit())
         return -1;
@@ -32,8 +34,12 @@ int main(int argc, char * argv[])
         return -1;
     }
     glfwMakeContextCurrent(window);
+
     if(glewInit() != GLEW_OK)
         std::cout << "Error" << std::endl;
+
+    Shader shader;
+    shader.compileFromSource("/home/alex/Project/Packman/PackmanGame/Shaders/VertexShader.gsl", VertexShader);
 
     std::cout << glGetString(GL_VERSION) << std::endl;
 
@@ -62,10 +68,6 @@ int main(int argc, char * argv[])
         glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
-
-
-
-
 
     unsigned int shaderProgram;
     shaderProgram = glCreateProgram();
