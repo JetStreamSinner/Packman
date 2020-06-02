@@ -12,20 +12,27 @@ enum ShaderType
     None = 0
 };
 
+class ShaderProgram;
+
 class Shader
 {
+    friend ShaderProgram;
 public:
-    Shader() : _shader(0), _type(ShaderType::None) { }
+    Shader() : _shader(0), _type(ShaderType::None), _compiledStatus(false) { }
     Shader(const Shader &rhs) = delete;
     Shader& operator=(const Shader &rhs) = delete;
 
-    Shader(const Shader &&lhs) noexcept;
-    Shader& operator=(const Shader &&lhs);
-
     bool compileShader(const std::string &source, ShaderType type);
     bool compileFromSource(const boost::filesystem::path &path, ShaderType type);
+
+    bool compileStatus() const;
+    std::string lastCompileError() const;
+    ShaderType shaderType() const;
 private:
     std::string loadShaderSource(const boost::filesystem::path &path);
+
+    std::string _lastCompileError;
+    bool _compiledStatus;
 
     unsigned int _shader;
     ShaderType _type;

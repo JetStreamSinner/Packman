@@ -4,7 +4,9 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
 #include "Shader.h"
+#include "ShaderProgram.h"
 
 const char * vertexShaderSource =
 "#version 330 core\n"\
@@ -22,6 +24,7 @@ const char * fragmentShaderSource =
         "FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"\
         "}\n";
 
+
 int main(int argc, char * argv[])
 {
 
@@ -38,50 +41,27 @@ int main(int argc, char * argv[])
     if(glewInit() != GLEW_OK)
         std::cout << "Error" << std::endl;
 
-    Shader shader;
-    shader.compileFromSource("/home/alex/Project/Packman/PackmanGame/Shaders/VertexShader.gsl", VertexShader);
 
-    std::cout << glGetString(GL_VERSION) << std::endl;
+    Shader vertexShader;
+    const std::string vertexShaderSourcesPath = "/home/alex/Project/Packman/PackmanGame/Shaders/VertexShader.gsl";
+    vertexShader.compileFromSource(vertexShaderSourcesPath, VertexShader);
 
-    unsigned int vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
+    Shader fragmentShader;
+    const std::string fragmentShaderSourcesPath = "/home/alex/Project/Packman/PackmanGame/Shaders/FragmentShader.gsl";
+    fragmentShader.compileFromSource(fragmentShaderSourcesPath, FragmentShader);
 
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    std::cout << "Vertex shader error: " << vertexShader.lastCompileError() << std::endl;
+    std::cout << "Fragment shader error: " << fragmentShader.lastCompileError() << std::endl;
+    std::cout << "Error: " << glGetError() << std::endl;
 
-    if (!success) {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
+    ShaderProgram program;
+    program.attachShader(vertexShader);
+    program.attachShader(fragmentShader);
+    program.link();
 
-    unsigned int fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-
-    if (!success) {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-
-    unsigned int shaderProgram;
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-    }
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    std::cout << "Vertex shader compile status: " << (vertexShader.compileStatus() ? "true" : "false") << std::endl;
+    std::cout << "Fragment shader compile status: " << (fragmentShader.compileStatus() ? "true" : "false") << std::endl;
+    std::cout << "Shader program linkage status: " << (program.linkageStatus() ? "true" : "false") << std::endl;
 
     float position[12] = {
             0.5f,  0.5f, 0.0f,  // верхняя правая
@@ -122,7 +102,7 @@ int main(int argc, char * argv[])
     while(!glfwWindowShouldClose(window)) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        glUseProgram(shaderProgram);
+        program.bindProgram();
         glBindVertexArray(VAO);
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

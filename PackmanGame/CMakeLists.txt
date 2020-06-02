@@ -17,7 +17,7 @@ link_directories(${GLEW_LIB_PATH} ${GLFW_LIB_PATH} ${BOOST_LIB_PATH})
 find_package(OpenGL REQUIRED)
 set(OpenGL_GL_REFERENCE "GLVND")
 
-set(src "main.cpp" "Shader.cpp")
+set(src "main.cpp" "Shader.cpp" "ShaderProgram.cpp")
 
 add_executable (PackmanGame ${src})
 
